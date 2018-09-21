@@ -1,0 +1,171 @@
+/*Sass: Store Data with Sass Variables*/
+/*In Sass, variables start with a $ followed by the variable name.*/
+  $text-color: red;
+  .header{
+    text-align: $text-color;
+  }
+  .blog-post, h2 {
+    color:$text-color;
+  }
+
+/*Sass: Nest CSS with Sass*/
+/*Sass allows nesting of CSS rules, which is a useful way of organizing a style sheet.*/
+  .blog-post {
+    h1 {
+      text-align: center;
+      color: blue;
+    }
+    p {
+      font-size: 20px;
+    }
+  }
+/*Sass: Create Reusable CSS with Mixins*/
+/*In Sass, a mixin is a group of CSS declarations that can be reused throughout the style sheet.*/
+/* A mixin is called with the @include directive:*/
+  @mixin border-radius($radius){
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+  } 
+  
+  #awesome {
+    width: 150px;
+    height: 150px;
+    background-color: green;
+    @include border-radius(15px);
+  }
+ 
+/*Sass: Use @if and @else to Add Logic To Your Styles*/
+/*The @if directive in Sass is useful to test for a specific case - it works just like the if statement in JavaScript.*/
+/*And just like in JavaScript, @else if and @else test for more conditions*/
+  @mixin border-stroke($val) {
+    @if $val == light {
+      border: 1px solid black;
+    }
+    @else if $val == medium {
+      border: 3px solid black;
+    }
+    @else if $val == heavy {
+      border: 6px solid black;
+    }
+    @else {
+      border: none;
+    }
+  }
+  
+  #box {
+    width: 150px;
+    height: 150px;
+    background-color: red;
+    @include border-stroke(heavy);
+  } 
+
+/*Sass: Use @for to Create a Sass Loop*/
+/*The @for directive adds styles in a loop, very similar to a for loop in JavaScript.*/
+/*The #{$i} part is the syntax to combine a variable (i) with text to make a string. */
+  @for $j from 1 to 6 {
+    .text-#{$j} { font-size: 10px * $j; }
+  }
+  @for $i from 1 through 12 {
+    .col-#{$i} { width: 100%/12 * $i; }
+  }
+
+/*Sass: Use @each to Map Over Items in a List*/
+/*Sass also offers the @each directive which loops over each item in a list or map.*/
+/*On each iteration, the variable gets assigned to the current value from the list*/
+@each $color in blue, red, green {
+  .#{$color}-text {color: $color;}
+}
+
+/*A map has slightly different syntax. Here's an example:*/
+$colors: (color1: blue, color2: red, color3: green);
+
+@each $key, $color in $colors {
+  .#{$color}-text {color: $color;}
+}
+
+/*Challenge*/
+
+<style type='text/sass'>
+  $colors:(color1: blue, color2: black, color3: red);
+
+  @each $key, $color in $colors {
+    .#{$color}-bg{
+       background-color: $color;
+       border: 2px solid yellow;
+    }
+  }
+  
+  
+  div {
+    height: 200px;
+    width: 200px;
+  }
+</style>
+
+<div class="blue-bg"></div>
+<div class="black-bg"></div>
+<div class="red-bg"></div>
+    
+/*Sass: Apply a Style Until a Condition is Met with @while*/
+/*The @for challenge gave an example to create a simple grid system. This can also work with @while.*/
+<style type='text/sass'>
+  $x: 1;
+  @while $x < 11 {
+    .text-#{$x} {
+      font-size: 5px * $x;
+    }
+    $x: $x + 1;
+  }
+</style>
+
+<p class="text-1">Hello</p>
+<p class="text-2">Hello</p>
+<p class="text-3">Hello</p>
+<p class="text-4">Hello</p>
+<p class="text-5">Hello</p>
+<p class="text-6">Hello</p>
+<p class="text-7">Hello</p>
+<p class="text-8">Hello</p>
+<p class="text-9">Hello</p>
+<p class="text-10">Hello</p>
+    
+/*Sass: Split Your Styles into Smaller Chunks with Partials*/
+/*Partials in Sass are separate files that hold segments of CSS code. These are imported and used in other Sass files. This is a great way to group similar code into a module to keep it organized.
+
+Names for partials start with the underscore (_) character, which tells Sass it is a small segment of CSS and not to convert it into a CSS file. Also, Sass files end with the .scss file extension. To bring the code in the partial into another Sass file, use the @import directive.
+
+For example, if all your mixins are saved in a partial named "_mixins.scss", and they are needed in the "main.scss" file, this is how to use them in the main file:*/
+
+// In the main.scss file
+
+@import 'mixins'
+    
+/*Note that the underscore is not needed in the import statement - Sass understands it is a partial. Once a partial is imported into a file, all variables, mixins, and other code are available to use.*/
+
+/*Sass: Extend One Set of CSS Styles to Another Element*/
+/*Sass has a feature called extend that makes it easy to borrow the CSS rules from one element and build upon them in another.*/
+    
+<style type='text/sass'>
+  h3{
+    text-align: center;
+  }
+  .info{
+    width: 200px;
+    border: 1px solid black;
+    margin: 0 auto;
+  }
+  .info-important{
+    @extend .info;
+    background-color: magenta;
+  }     
+</style>
+<h3>Posts</h3>
+<div class="info-important">
+  <p>This is an important post. It should extend the class ".info" and have its own CSS styles.</p>
+</div>
+
+<div class="info">
+  <p>This is a simple post. It has basic styling and can be extended for other uses.</p>
+</div>
